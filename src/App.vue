@@ -1,85 +1,111 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+<script>
+  import { ref } from 'vue';
+
+  export default {
+    data() {
+      return {
+        count: 0,
+        todoList: []
+      }
+    },
+
+    methods: {
+      increment() {
+        this.count++
+      },
+      addTodo() {
+        if(document.querySelector('.input-text').value.length > 0) {
+          this.todoList.push(document.querySelector('.input-text').value)
+          document.querySelector('.input-text').value = ""
+          console.log(this.todoList)
+        }
+      }
+    },
+
+    mounted() {
+      this.increment()
+    }
+  }
+
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <div class="input-wrapper">
+    <input class="input-text" type="text" placeholder="Agrega un Tarea"/>
+    <button class="input-button" @click="addTodo()">Agregar Tarea</button>
+  </div>
+  <ul class="todo-wrapper">
+    <li class="todo" v-for="todo in todoList">
+      <span>{{ todo }}</span>
+    </li>
+  </ul>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
+.input-wrapper {
   width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.input-text {
+  display: block;
+  width: 30rem;
+  height: 4rem;
+  font-size: 1rem;
+  padding: 0 0.9rem;
+  margin-right: 0.5rem;
+  outline: none;
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+.input-text:focus {
+  background-color: rgb(235, 235, 235);
+  border-bottom: 0.2rem solid #719eed;
+  transition: 100ms;
 }
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+.input-button {
+  width: 10rem;
+  height: 4rem;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  background-color: #719eed;
 }
 
-nav a:first-of-type {
-  border: 0;
+.input-button:hover {
+  transform: scale(0.99);
+  transform: translateY(0.1rem);
+  background-color: #638ace;
+  transition: 100ms;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+.todo-wrapper {
+  width: 100%;
+  min-height: 6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+.todo {
+  display: flex;
+  width: 50%;
+  height: 2.5rem;
+  background-color: #a4f1ad;
+  align-items: center;
+  padding: 0 0.5rem;
+  border-left: 1rem solid #78d984;
+  margin-bottom: 0.3rem;
+}
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.todo span {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  text-transform: capitalize;
 }
 </style>
