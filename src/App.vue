@@ -17,12 +17,19 @@
         if(document.querySelector('.input-text').value.length > 0) {
           this.todoList.push(document.querySelector('.input-text').value)
           document.querySelector('.input-text').value = ""
-          console.log(this.todoList)
+          localStorage.setItem("historial", JSON.stringify(this.todoList))
+        }
+      },
+      loadHistorial()  {
+        const historial = localStorage.getItem("historial")
+        if(historial) {
+          this.todoList.push(...JSON.parse(historial))
         }
       }
     },
 
     mounted() {
+      this.loadHistorial()
       this.increment()
     }
   }
