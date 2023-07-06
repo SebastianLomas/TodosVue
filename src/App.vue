@@ -62,8 +62,8 @@
     <input class="input-text" type="text" placeholder="Agrega un Tarea"/>
     <button class="input-button" @click="addTodo()">Agregar Tarea</button>
   </div>
-  <ul class="todo-wrapper" v-for="todo in todoList">
-    <Todo :todoText="todo.value" />
+  <ul class="todo-wrapper">
+    <Todo v-for="todo in todoList" :todoText="todo.value" />
   </ul>
 </template>
 
@@ -119,26 +119,5 @@
   align-items: center;
 }
 
-.todo {
-  display: flex;
-  width: 50%;
-  height: 2.5rem;
-  background-color: #a4f1ad;
-  align-items: center;
-  padding: 0 0.5rem;
-  border-left: 1rem solid #78d984;
-  margin-bottom: 0.3rem;
-}
 
-.todo span {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1rem;
-  text-transform: capitalize;
-  user-select: none;
-  color: #353131;
-}
 </style>
