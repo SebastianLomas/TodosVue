@@ -1,5 +1,6 @@
 <script>
   import RoundButton from './components/RoundButton.vue';
+  import Todo from './components/Todo.vue';
 
 /*   const deleteTodo = function(ev) {
     console.log(ev)
@@ -51,7 +52,7 @@
     mounted() {
         this.loadHistorial();
     },
-    components: { RoundButton }
+    components: { RoundButton, Todo }
 }
 
 </script>
@@ -61,13 +62,8 @@
     <input class="input-text" type="text" placeholder="Agrega un Tarea"/>
     <button class="input-button" @click="addTodo()">Agregar Tarea</button>
   </div>
-  <ul class="todo-wrapper">
-    <li class="todo" v-for="todo in todoList">
-      <span>
-        {{ todo.value }}
-        <RoundButton :id="todo.id" @click="deleteTodo($event)" />
-      </span>
-    </li>
+  <ul class="todo-wrapper" v-for="todo in todoList">
+    <Todo :todoText="todo.value" />
   </ul>
 </template>
 
