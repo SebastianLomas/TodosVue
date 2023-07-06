@@ -1,38 +1,58 @@
 <script>
-  import { ref } from 'vue';
+  import RoundButton from './components/RoundButton.vue';
 
+/*   const deleteTodo = function(ev) {
+    console.log(ev)
+  } */
   export default {
     data() {
-      return {
-        count: 0,
-        todoList: []
-      }
+        return {
+            count: 0,
+            todoList: []
+        };
     },
-
     methods: {
-      increment() {
-        this.count++
-      },
-      addTodo() {
-        if(document.querySelector('.input-text').value.length > 0) {
-          this.todoList.push(document.querySelector('.input-text').value)
-          document.querySelector('.input-text').value = ""
-          localStorage.setItem("historial", JSON.stringify(this.todoList))
+        increment() {
+            this.count++;
+        },
+        addTodo() {
+            if (document.querySelector(".input-text").value.length > 0) {
+                this.todoList.push({id: this.count, value: document.querySelector(".input-text").value});
+                this.increment()
+                document.querySelector(".input-text").value = "";
+                this.saveHistorial(this.todoList)
+            }
+        },
+        getUnusedId() {
+          const todoListLen = this.todoList.length
+          return todoListLen
+        },
+        saveHistorial(finalTodoList) {
+          localStorage.setItem("historial", JSON.stringify(finalTodoList));
         }
-      },
-      loadHistorial()  {
-        const historial = localStorage.getItem("historial")
-        if(historial) {
-          this.todoList.push(...JSON.parse(historial))
+        ,
+        loadHistorial() {
+            const historial = localStorage.getItem("historial");
+            if (historial) {
+                this.todoList.push(...JSON.parse(historial));
+                this.count = this.getUnusedId()
+            }
+        },
+        deleteTodo(ev) {
+          const todoId = ev.target.id || ev.target.parentElement.id || ev.target.parentElement.parentNode.id
+          this.todoList = this.todoList.filter(todo => todo.id != todoId)
+          this.saveHistorial(this.todoList)
+          console.log(this.todoList)
+          console.log(ev)
+          console.log(ev.target.parentElement.parentNode.id)
+          console.log(ev.target.id || ev.target.parentElement.id || ev.target.parentElement.parentNode.id)
         }
-      }
     },
-
     mounted() {
-      this.loadHistorial()
-      this.increment()
-    }
-  }
+        this.loadHistorial();
+    },
+    components: { RoundButton }
+}
 
 </script>
 
@@ -43,7 +63,10 @@
   </div>
   <ul class="todo-wrapper">
     <li class="todo" v-for="todo in todoList">
-      <span>{{ todo }}</span>
+      <span>
+        {{ todo.value }}
+        <RoundButton :id="todo.id" @click="deleteTodo($event)" />
+      </span>
     </li>
   </ul>
 </template>
@@ -65,6 +88,7 @@
   padding: 0 0.9rem;
   margin-right: 0.5rem;
   outline: none;
+  border-bottom: 0.2rem solid #3b3b3b0c;
 }
 
 .input-text:focus {
@@ -111,8 +135,14 @@
 }
 
 .todo span {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1rem;
   text-transform: capitalize;
+  user-select: none;
+  color: #353131;
 }
 </style>
