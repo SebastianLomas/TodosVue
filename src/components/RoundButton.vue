@@ -3,9 +3,7 @@
 </script>
 
 <template>
-  <div class="round-button">
-    <v-icon name="bi-trash-fill" />
-  </div>
+
 </template>
 
 <style scoped>

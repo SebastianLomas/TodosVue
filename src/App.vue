@@ -189,6 +189,7 @@
   }
   100% {
     transform: translateX(-10rem);
+    
   }
 }
 
