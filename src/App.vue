@@ -39,14 +39,13 @@
                 this.count = this.getUnusedId()
             }
         },
-        deleteTodo(ev) {
-          const todoId = ev.target.id || ev.target.parentElement.id || ev.target.parentElement.parentNode.id
-          this.todoList = this.todoList.filter(todo => todo.id != todoId)
-          this.saveHistorial(this.todoList)
-          console.log(this.todoList)
-          console.log(ev)
-          console.log(ev.target.parentElement.parentNode.id)
-          console.log(ev.target.id || ev.target.parentElement.id || ev.target.parentElement.parentNode.id)
+        deleteTodo(event,todoId) {
+          document.getElementById(todoId).classList.add("deleting")
+          setTimeout(() => {
+            this.todoList = this.todoList.filter(todo => todo.id !== todoId)
+            this.saveHistorial(this.todoList)
+            console.log(this.todoList)
+          },500)
         }
     },
     mounted() {
@@ -63,7 +62,14 @@
     <button class="input-button" @click="addTodo()">Agregar Tarea</button>
   </div>
   <ul class="todo-wrapper">
-    <Todo v-for="todo in todoList" :todoText="todo.value" />
+    <li class="todo" v-for="todo in todoList" :id="todo.id">
+      <span>
+        {{ todo.value }}
+        <div class="round-button" @click="deleteTodo($event,todo.id)">
+          <v-icon name="bi-trash-fill" />
+        </div>
+      </span>
+    </li>
   </ul>
 </template>
 
@@ -119,5 +125,71 @@
   align-items: center;
 }
 
+.round-button {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid #7bc784; */
+    color: #353131;
+    border-radius: 100%;
+    background-color: #95e19e;
+  }
+
+  .round-button:hover {
+    color: rgb(235, 229, 229);
+    transform: rotate(-30deg);
+    cursor: pointer;
+    background-color: #5ca064;
+    transition: 100ms;
+  }
+
+  .round-button:active {
+    background-color: #3e7044;
+    transition: 100ms;
+  }
+
+.todo {
+  display: flex;
+  width: 50%;
+  height: 2.5rem;
+  background-color: #a4f1ad;
+  align-items: center;
+  padding: 0 0.5rem;
+  border-left: 1rem solid #78d984;
+  margin-bottom: 0.3rem;
+}
+
+.todo span {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  text-transform: capitalize;
+  user-select: none;
+  color: #353131;
+}
+
+.deleting {
+  animation: deletingAnim 500ms cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+@keyframes deletingAnim {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(0.9);
+  }
+  31% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-10rem);
+  }
+}
 
 </style>
